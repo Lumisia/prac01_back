@@ -32,5 +32,11 @@ public class BoardController {
         BoardDto.ReadRes dto = boardService.read(idx);
         return ResponseEntity.ok(dto);
     }
+
+    @PutMapping("/update/{idx}")
+    public ResponseEntity update(@PathVariable Long idx, @RequestBody BoardDto.RegReq dto) {
+        BoardDto.RegRes returnDto = boardService.update(idx, dto);
+        return ResponseEntity.ok(returnDto);
+    }
 }
 

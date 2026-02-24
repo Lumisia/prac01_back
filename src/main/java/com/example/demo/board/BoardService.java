@@ -27,4 +27,13 @@ public class BoardService {
         Board board = boardRepository.findById(idx).orElseThrow();
         return BoardDto.ReadRes.from(board);
     }
+
+    public BoardDto.RegRes update(Long idx, BoardDto.RegReq dto) {
+        Board board = boardRepository.findById(idx).orElseThrow();
+        board.update(dto);
+
+        boardRepository.save(board);
+
+        return BoardDto.RegRes.from(board);
+    }
 }

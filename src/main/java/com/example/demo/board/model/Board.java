@@ -20,4 +20,9 @@ public class Board {
     private Long idx;
     private String title;
     private String contents;
+
+    public void update(BoardDto.RegReq dto) {
+        this.title = dto.getTitle();
+        this.contents = dto.getContents();
+    }
 }
