@@ -1,0 +1,39 @@
+package com.example.demo.common.model;
+
+import static com.example.demo.common.model.BaseResponseStatus.Success;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+/*
+ *   {success: true, code: 1000, message: '아이디 비밀번호를 확인해주세요', result: 실제 응답 객체}
+ *
+ */
+@Getter
+@Setter
+@AllArgsConstructor
+public class BaseResponse<T> {
+    private Boolean success;
+    private Integer code;
+    private String message;
+    private T result;
+
+    public static <T> BaseResponse success(T result) {
+        return new BaseResponse(
+                Success.isSuccess(),
+                Success.getCode(),
+                Success.getMessage(),
+                result
+        );
+    }
+
+    public static <T> BaseResponse fail(BaseResponseStatus status, T result) {
+        return new BaseResponse(
+                status.isSuccess(),
+                status.getCode(),
+                status.getMessage(),
+                result
+        );
+    }
+}
