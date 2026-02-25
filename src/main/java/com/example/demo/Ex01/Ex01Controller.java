@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@RequestMapping("/ex01")
-@RestController
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@RequestMapping("/ex01")
+//@RestController
 public class Ex01Controller {
 }

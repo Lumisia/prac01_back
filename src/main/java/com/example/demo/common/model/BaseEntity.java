@@ -1,9 +1,6 @@
 package com.example.demo.common.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -32,7 +29,7 @@ public class BaseEntity {
         this.updateAt = Timestamp.from(Instant.now());
     }
 
-    @PrePersist
+    @PreUpdate
     void updatedAt() {
         this.updateAt = Timestamp.from(Instant.now());
     }
