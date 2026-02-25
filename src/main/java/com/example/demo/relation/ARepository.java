@@ -8,6 +8,4 @@ import java.util.Optional;
 
 public interface ARepository extends JpaRepository<A, Long> {
 
-    @Query("Select")
-    Optional<A> findByBList
 }
