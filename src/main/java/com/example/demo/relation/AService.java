@@ -21,7 +21,7 @@ public class AService {
         List<A> list = aRepository.findAll();
 
         for(A a : list) {
-            System.out.print(a.getIdx() + " " + a.getB_list());
+            System.out.println(a.getIdx() + " " + a.getA01());
         }
         System.out.println("");
     }
