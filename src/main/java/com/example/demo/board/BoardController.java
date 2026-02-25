@@ -19,8 +19,8 @@ public class BoardController {
         BoardDto.RegRes result;
         try {
             result = boardService.register(dto);
-        }catch () {
-
+        }catch (Exception e) {
+            throw new RuntimeException();
         }
         return ResponseEntity.ok(result);
     }

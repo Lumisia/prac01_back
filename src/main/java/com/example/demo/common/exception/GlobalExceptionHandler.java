@@ -1,15 +1,34 @@
 package com.example.demo.common.exception;
 
+import com.example.demo.common.model.BaseResponse;
+import com.example.demo.common.model.BaseResponseStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+
     @ExceptionHandler
-    public void handleException(Exception e) {
-        System.out.println("======= 예외처리 ========");
-        System.out.println(e.getMessage());
-        System.out.println("======= 예외처리 ========");
+    public ResponseEntity handleException(BaseException e) {
+        BaseResponseStatus status = e.getStatus();
+        int errorCode = status.getCode();
+        int statusCode = statusCodeMapper(errorCode);
+        BaseResponse response = BaseResponse.fail(status);
+
+        return ResponseEntity
+                .status(statusCode)
+                .body(response);
+    }
+
+    private int statusCodeMapper(int code) {
+        if(code < 4000) {
+            return 400;
+        }else if(code >= 5000){
+            return 500;
+        }
+
+        return 400;
     }
 }

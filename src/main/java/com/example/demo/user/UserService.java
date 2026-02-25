@@ -1,5 +1,7 @@
 package com.example.demo.user;
 
+import com.example.demo.common.exception.BaseException;
+import com.example.demo.common.model.BaseResponseStatus;
 import com.example.demo.user.model.AuthUserDetails;
 import com.example.demo.user.model.EmailVerify;
 import com.example.demo.user.model.User;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.example.demo.common.model.BaseResponseStatus.*;
+
 @RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
@@ -24,7 +28,7 @@ public class UserService implements UserDetailsService {
     public UserDto.SignupRes signup(UserDto.SignupReq dto) {
 
         if(userRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new RuntimeException("예외입니다.");
+            throw new BaseException(SIGNUP_DUPLICATE_EMAIL);
         }
 
         User user = dto.toEntity();
@@ -44,14 +48,18 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username).orElseThrow();
+        User user = userRepository.findByEmail(username).orElseThrow(
+                () -> BaseException.form(SIGNUP_INVALID_USERNAME)
+        );
 
         return AuthUserDetails.from(user);
     }
 
     public void verify(String uuid) {
         EmailVerify emailVerify = emailVerifyRepository.findByUuid(uuid).orElseThrow();
-        User user = userRepository.findByEmail(emailVerify.getEmail()).orElseThrow();
+        User user = userRepository.findByEmail(emailVerify.getEmail()).orElseThrow(
+                () -> BaseException.form(SIGNUP_DUPLICATE_EMAIL)
+        );
         user.setEnable(true);
         userRepository.save(user);
     }
