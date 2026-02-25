@@ -22,6 +22,11 @@ public class UserService implements UserDetailsService {
     private final EmailVerifyRepository emailVerifyRepository;
 
     public UserDto.SignupRes signup(UserDto.SignupReq dto) {
+
+        if(userRepository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new RuntimeException("예외입니다.");
+        }
+
         User user = dto.toEntity();
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(user);
