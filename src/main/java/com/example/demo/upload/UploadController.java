@@ -25,6 +25,8 @@ public class UploadController {
 //    @Qualifier(value = "cloudUploadService")
     private final UploadService uploadService;
 
+
+
     @PostMapping("/image")
     public ResponseEntity upload(List<MultipartFile> images) {
         List<String> result = uploadService.upload(images);
