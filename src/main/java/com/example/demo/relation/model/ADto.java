@@ -18,7 +18,7 @@ public class ADto {
             return ARes.builder()
                     .idx(entity.getIdx())
                     .a01(entity.getA01())
-                    .bList(entity.getB_list().stream().map())
+                    .bList(entity.getB_list().stream().map(BDto.BRes::form).toList())
                     .build();
         }
     }
