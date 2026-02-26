@@ -1,9 +1,10 @@
-package com.example.demo.upload;
+package com.example.demo.Upload;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface UploadService {
-    List<String> upload(List<MultipartFile> fileList);
+
+    public List<String> upload(List<MultipartFile> fileList);
 }
