@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import software.amazon.awssdk.annotations.NotNull;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+    @Column(nullable=false, length = 100)
     private String title;
     private String contents;
 
