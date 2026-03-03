@@ -5,6 +5,8 @@ jwt:
 project:
   upload:
     path: ${UPLOAD_PATH}
+  aes:
+    key: ${AES_KEY}
 
 spring:
   application:
@@ -72,5 +74,6 @@ spring:
 
 logging:
   level:
+    com.example.demo: debug
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
