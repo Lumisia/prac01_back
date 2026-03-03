@@ -9,6 +9,31 @@ project:
 spring:
   application:
     name: spring04
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_ID}
+            client-secret: ${GOOGLE_SECRET}
+            redirect-uri: ${GOOGLE_URI}
+            scope:
+              - email
+              - profile
+          kakao:
+            client-id: ${KAKAO_ID}
+            client-secret: ${KAKAO_SECRET}
+            client-name: kakao
+            redirect-uri: ${KAKAO_URI}
+            authorization-grant-type: authorization_code
+            scope: profile_nickname
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: ${KAKAO_AUTHORIZATION}
+            token-uri: ${KAKAO_TOKEN}
+            user-info-uri: ${KAKAO_USERINFO}
+            user-name-attribute: id
   cloud:
     aws:
       credentials:
@@ -20,8 +45,8 @@ spring:
         static: ap-northeast-2
   mail:
     host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_ADDR}
+    port: ${MAIL_PORT}
+    username: ${MAIL_ID}
     password: ${MAIL_PASS}
     properties:
       mail:
@@ -32,9 +57,9 @@ spring:
           auth: true
           timeout: 5000
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: ${DB_SERVER}
     url: ${DB_URL}
-    username: ${DB_USER}
+    username: ${DB_ID}
     password: ${DB_PASS}
 
   jpa:

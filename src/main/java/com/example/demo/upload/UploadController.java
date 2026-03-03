@@ -1,4 +1,4 @@
-package com.example.demo.upload;
+package com.example.demo.Upload;
 
 import com.example.demo.board.model.BoardDto;
 import com.example.demo.common.model.BaseResponse;
