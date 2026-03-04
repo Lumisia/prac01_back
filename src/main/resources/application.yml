@@ -59,10 +59,16 @@ spring:
           auth: true
           timeout: 5000
   datasource:
-    driver-class-name: ${DB_SERVER}
-    url: ${DB_URL}
-    username: ${DB_ID}
-    password: ${DB_PASS}
+    master:
+      driver-class-name: ${DB_MASTER_SERVER}
+      jdbc-url: ${DB_MASTER_URL}
+      username: ${DB_MASTER_ID}
+      password: ${DB_MASTER_PASS}
+    slave:
+      driver-class-name: ${DB_SLAVE_SERVER}
+      jdbc-url: ${DB_SLAVE_URL}
+      username: ${DB_SLAVE_ID}
+      password: ${DB_SLAVE_PASS}
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDBDialect

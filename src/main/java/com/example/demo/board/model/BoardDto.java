@@ -4,6 +4,7 @@ import com.example.demo.reply.model.ReplyDto;
 import com.example.demo.user.model.AuthUserDetails;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -55,6 +56,25 @@ public class BoardDto {
                     .writer(entity.getUser().getName())
                     .replyCount(entity.getReplyList().size())
                     .likesCount(entity.getLikesList().size())
+                    .build();
+        }
+    }
+    @Builder
+    @Getter
+    public static class PageRes {
+        private List<ListRes> boardList;
+        private int totalPage;
+        private long totalCount;
+        private int currentPage;
+        private int currentSize;
+
+        public static PageRes from(Page<Board> list) {
+            return PageRes.builder()
+                    .boardList(list.stream().map(ListRes::from).toList())
+                    .totalPage(list.getTotalPages())
+                    .totalCount(list.getTotalElements())
+                    .currentPage(list.getPageable().getPageNumber())
+                    .currentSize(list.getPageable().getPageSize())
                     .build();
         }
     }
