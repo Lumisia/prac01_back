@@ -1,4 +1,4 @@
-package com.example.demo.Upload;
+package com.example.demo.upload;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package com.example.demo.Upload;
+package com.example.demo.upload;
 
 import com.example.demo.utils.UploadUtil;
 import lombok.RequiredArgsConstructor;
