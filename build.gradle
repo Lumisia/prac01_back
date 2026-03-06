@@ -43,6 +43,10 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation 'org.springframework.security:spring-security-oauth2-client'
+
+    // Web Push
+    implementation("nl.martijndwars:web-push:5.1.1")
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 }
 
 tasks.named('test') {
