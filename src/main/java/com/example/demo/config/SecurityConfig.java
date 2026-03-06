@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -69,9 +70,15 @@ public class SecurityConfig {
             config.successHandler(oAuth2AuthenticationSuccessHandler);
         });
 
-        http.authorizeHttpRequests(
+        http.csrf(csrf -> csrf.disable()) // API 방식이므로 비활성화
+                .cors(Customizer.withDefaults()) // CORS 적용
+
+                // 1. 이게 핵심! 시큐리티 기본 로그인 창 리다이렉트를 강제로 끕니다.
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
+                .authorizeHttpRequests(
                 (auth) -> auth
-                        .requestMatchers("/user/login", "/user/signup", "/user/verify", "/ws").permitAll()
+                        .requestMatchers("/user/login", "/user/signup","/api/user/login", "/user/verify", "/ws-stomp/**", "/ws-stomp", "/ws/**").permitAll()
                         .requestMatchers("/board/reg").authenticated()
 //                        .anyRequest().authenticated()
                         .anyRequest().permitAll()
