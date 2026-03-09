@@ -8,7 +8,28 @@ project:
   aes:
     key: ${AES_KEY}
 
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # 모든 요청에 대한 데이터를 수집하겠다.
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus, health, info, metrics"
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
+  otlp:
+    tracing:
+      endpoint: http://10.10.10.50:4318/v1/traces
+
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: spring04
   security:

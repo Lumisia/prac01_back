@@ -50,6 +50,12 @@ dependencies {
 
     // Web socket
     implementation("org.springframework.boot:spring-boot-starter-websocket:3.5.5")
+
+    implementation("org.springframework.boot:spring-boot-starter-aop:3.5.3")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+    implementation("io.micrometer:micrometer-tracing-bridge-otel")
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 }
 
 tasks.named('test') {
