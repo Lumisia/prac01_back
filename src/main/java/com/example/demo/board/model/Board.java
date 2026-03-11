@@ -33,11 +33,16 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board")
     List<Reply> replyList;
 
+    private int likesCount;
+
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     List<Likes> likesList;
 
     public void update(BoardDto.RegReq dto) {
         this.title = dto.getTitle();
         this.contents = dto.getContents();
+    }
+    public void likes_update() {
+        this.likesCount += 1;
     }
 }

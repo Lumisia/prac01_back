@@ -1,5 +1,6 @@
 package com.example.demo.board.model;
 
+import com.example.demo.reply.model.Reply;
 import com.example.demo.reply.model.ReplyDto;
 import com.example.demo.user.model.AuthUserDetails;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,6 +10,26 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public class BoardDto {
+    @Getter
+    @Builder
+    public static class PageRes {
+        private List<ListRes> boardList;
+        private int totalPage;
+        private long totalCount;
+        private int currentPage;
+        private int currentSize;
+
+        public static PageRes from(Page<Board> result) {
+            return PageRes.builder()
+                    .boardList(result.get().map(BoardDto.ListRes::from).toList())
+                    .totalPage(result.getTotalPages())
+                    .totalCount(result.getTotalElements())
+                    .currentPage(result.getPageable().getPageNumber())
+                    .currentSize(result.getPageable().getPageSize())
+                    .build();
+        }
+    }
+    @AllArgsConstructor
     @Getter
     public static class RegReq {
         @Schema(description = "제목, 제목은 50글자까지만 입력 가능합니다.", required = true, example = "제목01")
@@ -59,25 +80,6 @@ public class BoardDto {
                     .build();
         }
     }
-    @Builder
-    @Getter
-    public static class PageRes {
-        private List<ListRes> boardList;
-        private int totalPage;
-        private long totalCount;
-        private int currentPage;
-        private int currentSize;
-
-        public static PageRes from(Page<Board> list) {
-            return PageRes.builder()
-                    .boardList(list.stream().map(ListRes::from).toList())
-                    .totalPage(list.getTotalPages())
-                    .totalCount(list.getTotalElements())
-                    .currentPage(list.getPageable().getPageNumber())
-                    .currentSize(list.getPageable().getPageSize())
-                    .build();
-        }
-    }
 
     @Builder
     @Getter
@@ -89,14 +91,14 @@ public class BoardDto {
         private List<ReplyDto.ReplyRes> replyList;
         private int likesCount;
 
-        public static ReadRes from(Board entity) {
+        public static ReadRes from(Board entity, List<Reply> replyList) {
             return ReadRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
                     .contents(entity.getContents())
                     .writer(entity.getUser().getName())
-                    .replyList(entity.getReplyList().stream().map(ReplyDto.ReplyRes::from).toList())
-                    .likesCount(entity.getLikesList().size())
+                    .replyList(replyList.stream().map(ReplyDto.ReplyRes::from).toList())
+                    .likesCount(entity.getLikesCount())
                     .build();
         }
     }

@@ -1,5 +1,6 @@
 package com.example.demo.likes;
 
+import com.example.demo.board.BoardRepository;
 import com.example.demo.board.model.Board;
 import com.example.demo.likes.model.Likes;
 import com.example.demo.user.model.AuthUserDetails;
@@ -10,12 +11,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class LikesService {
     private final LikesRepository likesRepository;
+    private final BoardRepository boardRepository;
+
     public void like(AuthUserDetails user, Long boardIdx) {
+        Board board = boardRepository.findById(boardIdx).orElseThrow();
         Likes likes = Likes.builder()
                 .user(user.toEntity())
                 .board(Board.builder().idx(boardIdx).build())
                 .build();
 
         likesRepository.save(likes);
+        board.likes_update();
+        boardRepository.save(board);
+
     }
 }

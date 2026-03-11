@@ -1,14 +1,13 @@
 package com.example.demo.user.model;
 
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Map;
-
 public class UserDto {
 
     @Getter
+    @AllArgsConstructor
     public static class SignupReq {
         @Pattern(message = "이메일 형식이 아닙니다.", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
         private String email; // test01@test.com ⭕    test01,  test@sdf ❌
