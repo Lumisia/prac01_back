@@ -3,7 +3,6 @@ package com.example.demo.likes;
 import com.example.demo.board.BoardRepository;
 import com.example.demo.board.model.Board;
 import com.example.demo.user.model.AuthUserDetails;
-import com.example.demo.user.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -48,7 +46,7 @@ class LikesServiceTest {
 
         long endTime = System.currentTimeMillis();
 
-        System.out.printf("처리 시간 : " + (endTime - startTime) + "ms");
+        System.out.println("처리 시간 : " + (endTime - startTime) + "ms");
         Board board = boardRepository.findById(1L).orElseThrow();
         assertEquals(threadCount, board.getLikesCount());
     }
