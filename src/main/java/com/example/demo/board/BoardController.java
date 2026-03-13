@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import com.example.demo.board.model.BoardDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +34,19 @@ public class BoardController {
 
     @GetMapping("/list")
     public ResponseEntity list(
-            @RequestParam(defaultValue = "10") int page,
-            @RequestParam(defaultValue = "5") int size) {
-
-        BoardDto.PageRes dto = boardService.list(page, size);
-
+            @RequestParam(required = true, defaultValue = "0") int page,
+            @RequestParam(required = true, defaultValue = "5") int size) {
+        Page<BoardDto.ListRes> dto = boardService.list(page, size);
         return ResponseEntity.ok(BaseResponse.success(dto));
     }
+
+    @GetMapping("/list/fetch")
+    public ResponseEntity listFetch() {
+        List<BoardDto.ListRes> result = boardService.list();
+        return ResponseEntity.ok(BaseResponse.success(result));
+    }
+
+
 
     @GetMapping("/read/{idx}")
     public ResponseEntity read(@PathVariable Long idx) {
@@ -59,4 +66,3 @@ public class BoardController {
         return ResponseEntity.ok(BaseResponse.success("성공"));
     }
 }
-

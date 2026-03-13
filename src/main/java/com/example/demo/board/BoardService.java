@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import com.example.demo.board.model.BoardDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +27,26 @@ public class BoardService {
         return BoardDto.RegRes.from(entity);
     }
 
-    public BoardDto.PageRes list(int page, int size) {
+    public List<BoardDto.ListRes> list() {
+
+        List<BoardDto.ListRes> result = boardRepository.findAllDto();
+
+        return result;
+    }
+
+    public Page<BoardDto.ListRes> list(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        // 페이징 처리가 필요한 경우, 페이지 번호가 필요하다. => Page 변환
-        Page<Board> result = boardRepository.findAll(pageRequest);
+        // 페이징 처리 ⭕, 페이지 번호가 필요하다 => Page 반환
+        // 페이징 처리 ⭕, 페이지 번호가 필요없다. => Slice 반환
+        Page<BoardDto.ListRes> result = boardRepository.findAllDtoWithPage(pageRequest);
 
-        // 페이징 처리가 필요한 경우, 페이지 번호가 필요없다 => Slice 변환
-//        Slice<Board> result = boardRepository.findAll(pageRequest);
-
-        return BoardDto.PageRes.from(result);
+        return result;
     }
 
     public BoardDto.ReadRes read(Long idx) {
         Board board = boardRepository.findById(idx).orElseThrow();
+
         Page<Reply> replies = replyRepository.findByBoard(
                 board, PageRequest.of(0, 4)
         );

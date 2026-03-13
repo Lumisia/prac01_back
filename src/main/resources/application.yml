@@ -6,57 +6,58 @@ project:
   upload:
     path: ${UPLOAD_PATH}
   aes:
-    key: ${AES_KEY}
+    key: aessecretkey01234567890123456789
 
 management:
-  tracing:
-    sampling:
-      probability: 1.0 # 모든 요청에 대한 데이터를 수집하겠다.
   endpoints:
     web:
       exposure:
-        include: "prometheus, health, info, metrics"
+        include: health, info, prometheus, metrics
   prometheus:
     metrics:
       export:
         enabled: true
-#  metrics:
-#    tags:
-#      application: ${spring.application.name}
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    #    enabled: false
+    sampling:
+      probability: 1.0   # 모든 요청에 대한 데이터를 수집하겠다.
   otlp:
     tracing:
       endpoint: http://10.10.10.50:4318/v1/traces
 
+
+
 spring:
-  main:
-    allow-bean-definition-overriding: true
-  application:
-    name: spring04
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_ID}
-            client-secret: ${GOOGLE_SECRET}
-            redirect-uri: ${GOOGLE_URI}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             scope:
               - email
               - profile
           kakao:
-            client-id: ${KAKAO_ID}
-            client-secret: ${KAKAO_SECRET}
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
             client-name: kakao
-            redirect-uri: ${KAKAO_URI}
+            redirect-uri: ${KAKAO_REDIRECT_URI}
             authorization-grant-type: authorization_code
             scope: profile_nickname
             client-authentication-method: client_secret_post
         provider:
           kakao:
-            authorization-uri: ${KAKAO_AUTHORIZATION}
-            token-uri: ${KAKAO_TOKEN}
-            user-info-uri: ${KAKAO_USERINFO}
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
+  application:
+    name: spring04
   cloud:
     aws:
       credentials:
@@ -68,8 +69,8 @@ spring:
         static: ap-northeast-2
   mail:
     host: smtp.gmail.com
-    port: ${MAIL_PORT}
-    username: ${MAIL_ID}
+    port: 587
+    username: ${MAIL_ADDR}
     password: ${MAIL_PASS}
     properties:
       mail:
@@ -80,16 +81,10 @@ spring:
           auth: true
           timeout: 5000
   datasource:
-    master:
-      driver-class-name: ${DB_MASTER_SERVER}
-      jdbc-url: ${DB_MASTER_URL}
-      username: ${DB_MASTER_ID}
-      password: ${DB_MASTER_PASS}
-    slave:
-      driver-class-name: ${DB_SLAVE_SERVER}
-      jdbc-url: ${DB_SLAVE_URL}
-      username: ${DB_SLAVE_ID}
-      password: ${DB_SLAVE_PASS}
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDBDialect
@@ -98,6 +93,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 10
 
 logging:
   level:
